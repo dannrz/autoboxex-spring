@@ -1,0 +1,25 @@
+server:
+  servlet:
+    context-path: /api/v1
+
+spring:
+  config:
+    # Local secrets (JWT_SECRET, ...) live in .env, which is git-ignored. Real env vars take precedence.
+    import: optional:file:.env[.properties]
+  application:
+    name: autoboxex-spring
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=autoboxex;encrypt=true;trustServerCertificate=true
+    username: autoboxex
+    password: qwerT5
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+auth:
+  jwt:
+    # HMAC-SHA256 key, at least 32 characters. Must be provided through the JWT_SECRET environment variable.
+    secret: ${JWT_SECRET}
+    issuer: autoboxex-spring
+    expiration-minutes: ${JWT_EXPIRATION_MINUTES:120}
+    timezone: America/Mexico_City
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://127.0.0.1:5173}
